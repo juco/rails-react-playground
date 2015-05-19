@@ -1,16 +1,27 @@
 var Commentbox = React.createClass({
   getInitialState: function() {
-    return { comments: [ { author: 'Example', content: 'Hello world' } ] };
+    return { comments: [ { author: 'Example', comment: 'Hello world' } ] };
+  },
+
+  componentDidMount: function() {
+    var that = this
+      , source = new EventSource('/comments/stream');
+    source.addEventListener('message', function(e) {
+      var data = JSON.parse(e.data)
+        , comments = that.state.comments || [];
+      comments = comments.concat([data]);
+      console.log('comments now:', comments);
+      that.setState({ comments: comments });
+    });
   },
 
   addComment: function(comment) {
-    var items = this.state.comments.concat([comment]);
-    this.setState({ comments: items });
+    $.post('/comments', {comment: comment});
   },
 
   render: function() {
     var comment = function(data) {
-      return <Comment author={data.author} content={data.content} />;
+      return <Comment author={data.author} comment={data.comment} />;
     };
 
     return (
@@ -32,8 +43,8 @@ var Comment = React.createClass({
             <a href="#">Delete</a>
           </span>
         </div>
-        <div className="content">
-          {this.props.content}
+        <div className="comment">
+          {this.props.comment}
         </div>
       </div>
     )
@@ -47,7 +58,7 @@ var CommentAdd = React.createClass({
       , commentNode = React.findDOMNode(this.refs.comment);
     var comment = {
       author: nameNode.value,
-      content: React.findDOMNode(this.refs.comment).value
+      comment: React.findDOMNode(this.refs.comment).value
     };
     this.props.commentAdded(comment);
     commentNode.value = nameNode.value = '';

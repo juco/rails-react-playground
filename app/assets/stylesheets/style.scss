@@ -45,7 +45,12 @@ $commentPadding: 5px;
     .submit {
       width: 100px;
       height: 25px;
+      padding: 5px;
+      font-size: 12px;
       text-align: center;
+      background-color: #019875;
+      color: #fff;
+      border-radius: 6%;
     }
   }
 }

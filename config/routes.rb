@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get 'comments' => 'comments#index'
+  resources 'comments', only: [:index, :create] do
+    collection { get :stream }
+  end
+
 
   root 'comments#index'
 

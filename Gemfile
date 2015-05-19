@@ -25,6 +25,8 @@ gem 'bundler', '>= 1.9.6'
 gem 'mongoid'
 gem 'react-rails', '~> 1.0'
 
+gem 'puma'
+gem 'redis'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
