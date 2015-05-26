@@ -1,4 +1,16 @@
+$backgroundColor: #EFF3FA;
+$colorPrimary: #2E9FFF;
+
 $commentPadding: 5px;
+$commentBorderColor: #E0E3E9;
+$commentBackgroundColor: #fff;
+$commentContentColor: #546673;
+$commentBorderRadius: 2px;
+$commentIconSize: 15px;
+
+body {
+  background: $backgroundColor;
+}
 
 .container {
   max-width: 600px;
@@ -16,14 +28,30 @@ $commentPadding: 5px;
 
   .comment {
     width: 100%;
-    border: 1px solid;
+    border: 1px solid $commentBorderColor;
     margin-bottom: 20px;
+    background-color: $commentBackgroundColor;
+    color: $commentContentColor;
+    border-radius: 2px;
 
     .header {
       display: flex;
       justify-content: space-between;
       padding: $commentPadding;
-      border-bottom: 1px solid;
+
+      .author {
+        color: $colorPrimary;
+      }
+
+      .actions {
+        .delete {
+          display: block;
+          background: image-url('delete.svg');
+          height: $commentIconSize;
+          width: $commentIconSize;
+          background-size: $commentIconSize;
+        }
+      }
     }
 
     .content {
@@ -32,7 +60,7 @@ $commentPadding: 5px;
   }
 
   .comment-add {
-    .comment {
+    .content {
       width: 100%;
       height: 80px;
     }

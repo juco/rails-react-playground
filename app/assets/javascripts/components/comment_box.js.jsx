@@ -1,16 +1,17 @@
 var Commentbox = React.createClass({
   getInitialState: function() {
-    return { comments: [ { author: 'Example', comment: 'Hello world' } ] };
+    return { comments: [ { author: 'Example', content: 'Hello world' } ] };
   },
 
   componentDidMount: function() {
     var that = this
       , source = new EventSource('/comments/stream');
+
     source.addEventListener('message', function(e) {
       var data = JSON.parse(e.data)
         , comments = that.state.comments || [];
+
       comments = comments.concat([data]);
-      console.log('comments now:', comments);
       that.setState({ comments: comments });
     });
   },
@@ -21,7 +22,7 @@ var Commentbox = React.createClass({
 
   render: function() {
     var comment = function(data) {
-      return <Comment author={data.author} comment={data.comment} />;
+      return <Comment author={data.author} content={data.content} />;
     };
 
     return (
@@ -40,11 +41,11 @@ var Comment = React.createClass({
         <div className="header">
           <span className="author">{this.props.author}</span>
           <span className="actions">
-            <a href="#">Delete</a>
+            <a href="#" className="delete"></a>
           </span>
         </div>
-        <div className="comment">
-          {this.props.comment}
+        <div className="content">
+          {this.props.content}
         </div>
       </div>
     )
@@ -55,13 +56,13 @@ var CommentAdd = React.createClass({
   addComment: function(e) {
     e.preventDefault();
     var nameNode = React.findDOMNode(this.refs.name)
-      , commentNode = React.findDOMNode(this.refs.comment);
+      , contentNode = React.findDOMNode(this.refs.content);
     var comment = {
       author: nameNode.value,
-      comment: React.findDOMNode(this.refs.comment).value
+      content: contentNode.value
     };
     this.props.commentAdded(comment);
-    commentNode.value = nameNode.value = '';
+    contentNode.value = nameNode.value = '';
   },
 
   render: function() {
@@ -71,7 +72,7 @@ var CommentAdd = React.createClass({
           <input type="text" ref="name" placeholder="name" />
         </div>
         <div className="form-field">
-          <textarea className="comment" ref="comment" />
+          <textarea className="content" ref="content" />
         </div>
         <input type="submit" 
                value="Add" 
