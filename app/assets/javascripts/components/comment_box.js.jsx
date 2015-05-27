@@ -55,10 +55,10 @@ var Comment = React.createClass({
 var CommentAdd = React.createClass({
   addComment: function(e) {
     e.preventDefault();
-    var nameNode = React.findDOMNode(this.refs.name)
+    var authorNode = React.findDOMNode(this.refs.author)
       , contentNode = React.findDOMNode(this.refs.content);
     var comment = {
-      author: nameNode.value,
+      author: authorNode.value,
       content: contentNode.value
     };
     this.props.commentAdded(comment);
@@ -69,7 +69,7 @@ var CommentAdd = React.createClass({
     return (
       <form className="comment-add" onSubmit={this.addComment}>
         <div className="form-field">
-          <input type="text" ref="name" placeholder="name" />
+          <input type="text" className="author" ref="author" placeholder="Name" />
         </div>
         <div className="form-field">
           <textarea className="content" ref="content" />

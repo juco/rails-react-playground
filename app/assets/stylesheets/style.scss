@@ -1,7 +1,7 @@
 $backgroundColor: #EFF3FA;
 $colorPrimary: #2E9FFF;
 
-$commentPadding: 5px;
+$commentPadding: 10px;
 $commentBorderColor: #E0E3E9;
 $commentBackgroundColor: #fff;
 $commentContentColor: #546673;
@@ -61,6 +61,13 @@ body {
   }
 
   .comment-add {
+    .author {
+      height: 2em;
+      width: 50%;
+      font-size: 1em;
+      padding-left: 10px;
+    }
+
     .content {
       width: 100%;
       height: 80px;
@@ -73,12 +80,13 @@ body {
 
     .submit {
       width: 100px;
-      height: 25px;
+      height: 40px;
       padding: 5px;
       font-size: 12px;
       text-align: center;
-      background-color: #019875;
+      background-color: $colorPrimary;
       color: #fff;
+      border: none;
       border-radius: 6%;
     }
   }
