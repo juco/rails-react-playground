@@ -2,9 +2,17 @@ class CommentsController < ApplicationController
   include ActionController::Live
 
   def index
+    @comments = $redis.get('comments') || []
   end
 
   def create
+    comments = if $redis.exists('comments')
+                 JSON.parse $redis.get('comments')
+               else
+                 []
+               end
+    pp comments
+    $redis.set('comments', comments.push(comment_params).to_json)
     $redis.publish('comment.create', comment_params.to_json)
     head :created
   end
@@ -17,8 +25,6 @@ class CommentsController < ApplicationController
         response.stream.write("data: #{data}\n\n")
       end
     end
-    #sse = SSE.new(response.stream, retry: 300, event: 'comment')
-    #sse.write({ name: 'John'}, id: 10, event: "other-event", retry: 500)
   rescue IOError
     logger.info 'Stream closed'
   ensure

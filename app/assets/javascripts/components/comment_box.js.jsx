@@ -1,6 +1,6 @@
 var Commentbox = React.createClass({
   getInitialState: function() {
-    return { comments: [ { author: 'Example', content: 'Hello world' } ] };
+    return { comments: JSON.parse(this.props.comments) };
   },
 
   componentDidMount: function() {

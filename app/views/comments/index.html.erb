@@ -1,9 +1,5 @@
 <div class="container">
-  <div class="header">
-    <h1>Comments</h1>
-  </div>
-
   <div class="page-content">
-    <%= react_component 'Commentbox', {}, { class: 'comment-box' } %>
+    <%= react_component 'Commentbox', { comments: @comments }, { class: 'comment-box' } %>
   </div>
 </div>
