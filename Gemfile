@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use SCSS for stylesheets
@@ -24,6 +23,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bundler', '>= 1.9.6'
 gem 'mongoid'
 gem 'react-rails', '~> 1.0'
+gem 'sprockets', '~>3.0.0.beta'
+gem 'sprockets-es6', require: 'sprockets/es6'
 
 gem 'puma'
 gem 'redis'

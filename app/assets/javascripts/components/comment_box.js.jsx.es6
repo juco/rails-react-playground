@@ -1,27 +1,29 @@
-var Commentbox = React.createClass({
-  getInitialState: function() {
-    return { comments: JSON.parse(this.props.comments) };
-  },
+'use strict';
 
-  componentDidMount: function() {
-    var that = this
-      , source = new EventSource('/comments/stream');
+class Commentbox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { comments: JSON.parse(props.comments) };
+  }
 
-    source.addEventListener('message', function(e) {
-      var data = JSON.parse(e.data)
-        , comments = that.state.comments || [];
+  componentDidMount() {
+    let source = new EventSource('/comments/stream');
+
+    source.addEventListener('message', (e) => {
+      let data = JSON.parse(e.data)
+        , comments = this.state.comments || [];
 
       comments = comments.concat([data]);
-      that.setState({ comments: comments });
+      this.setState({ comments: comments });
     });
-  },
+  }
 
-  addComment: function(comment) {
-    $.post('/comments', {comment: comment});
-  },
+  addComment(comment) {
+    $.post('/comments', { comment: comment });
+  }
 
-  render: function() {
-    var comment = function(data) {
+  render() {
+    let comment = (data) => {
       return <Comment author={data.author} content={data.content} />;
     };
 
@@ -32,10 +34,10 @@ var Commentbox = React.createClass({
       </div>
     );
   }
-});
+}
 
-var Comment = React.createClass({
-  render: function() {
+class Comment extends React.Component {
+  render() {
     return (
       <div className="comment">
         <div className="header">
@@ -50,22 +52,23 @@ var Comment = React.createClass({
       </div>
     )
   }
-});
+}
 
-var CommentAdd = React.createClass({
-  addComment: function(e) {
+class CommentAdd extends React.Component {
+  addComment(e) {
     e.preventDefault();
-    var authorNode = React.findDOMNode(this.refs.author)
+    let authorNode = React.findDOMNode(this.refs.author)
       , contentNode = React.findDOMNode(this.refs.content);
-    var comment = {
-      author: authorNode.value,
-      content: contentNode.value
-    };
+      , comment = {
+        author: authorNode.value,
+        content: contentNode.value
+      };
+
     this.props.commentAdded(comment);
     contentNode.value = nameNode.value = '';
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <form className="comment-add" onSubmit={this.addComment}>
         <div className="form-field">
@@ -81,4 +84,4 @@ var CommentAdd = React.createClass({
       </form>
       )
   }
-});
+}
