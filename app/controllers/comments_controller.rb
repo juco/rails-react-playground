@@ -1,8 +1,12 @@
+require 'digest'
+require 'json'
+
 class CommentsController < ApplicationController
   include ActionController::Live
 
   def index
-    @comments = $redis.get('comments') || []
+    hello_comment = { author: 'juco', content: 'Hello world!' }
+    @comments = $redis.get('comments') || [hello_comment]
   end
 
   def create
@@ -11,9 +15,12 @@ class CommentsController < ApplicationController
                else
                  []
                end
-    pp comments
-    $redis.set('comments', comments.push(comment_params).to_json)
+
+    new_comment = form_comment(comment_params)
+
+    $redis.set('comments', comments.push(new_comment).to_json)
     $redis.publish('comment.create', comment_params.to_json)
+
     head :created
   end
 
@@ -35,5 +42,18 @@ class CommentsController < ApplicationController
   private
     def comment_params
       params.require(:comment).permit(:author, :content)
+    end
+
+    def form_comment(comment_params)
+      comment_params.merge({
+        timestamp: Date.new,
+        id: comment_id(comment_params)
+      })
+    end
+
+    def comment_id(comment)
+      digest = Digest::MD5.new
+      digest << JSON.generate(comment)
+      digest.to_s
     end
 end

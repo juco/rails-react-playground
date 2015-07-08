@@ -3,7 +3,7 @@
 class Commentbox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: JSON.parse(props.comments) };
+    this.state = props;
   }
 
   componentDidMount() {
@@ -55,17 +55,22 @@ class Comment extends React.Component {
 }
 
 class CommentAdd extends React.Component {
-  addComment(e) {
-    e.preventDefault();
-    let authorNode = React.findDOMNode(this.refs.author)
-      , contentNode = React.findDOMNode(this.refs.content);
-      , comment = {
-        author: authorNode.value,
-        content: contentNode.value
-      };
+  constructor(props) {
+    super(props)
+    this.addComment = this.addComment.bind(this);
+  }
 
+  addComment(e) {
+    let authorNode = React.findDOMNode(this.refs.author)
+      , contentNode = React.findDOMNode(this.refs.content)
+      , comment = {
+          author: authorNode.value,
+          content: contentNode.value
+        };
+
+    e.preventDefault();
+    contentNode.value = authorNode.value = '';
     this.props.commentAdded(comment);
-    contentNode.value = nameNode.value = '';
   }
 
   render() {
