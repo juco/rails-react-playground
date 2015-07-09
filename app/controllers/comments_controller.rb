@@ -5,8 +5,8 @@ class CommentsController < ApplicationController
   include ActionController::Live
 
   def index
-    hello_comment = { author: 'juco', content: 'Hello world!' }
-    @comments = $redis.get('comments') || [hello_comment]
+    hello_comment = form_comment author: 'juco', content: 'Hello world!'
+    @comments = JSON.parse($redis.get('comments') || [hello_comment])
   end
 
   def create
@@ -46,8 +46,8 @@ class CommentsController < ApplicationController
 
     def form_comment(comment_params)
       comment_params.merge({
-        timestamp: Date.new,
-        id: comment_id(comment_params)
+        timestamp: Time.new.strftime('%Y%m%d%H%M%s'),
+        key: comment_id(comment_params)
       })
     end
 

@@ -10,8 +10,8 @@ class Commentbox extends React.Component {
     let source = new EventSource('/comments/stream');
 
     source.addEventListener('message', (e) => {
-      let data = JSON.parse(e.data)
-        , comments = this.state.comments || [];
+      let data = JSON.parse(e.data), 
+        comments = this.state.comments || [];
 
       comments = comments.concat([data]);
       this.setState({ comments: comments });
@@ -61,9 +61,9 @@ class CommentAdd extends React.Component {
   }
 
   addComment(e) {
-    let authorNode = React.findDOMNode(this.refs.author)
-      , contentNode = React.findDOMNode(this.refs.content)
-      , comment = {
+    let authorNode = React.findDOMNode(this.refs.author), 
+      contentNode = React.findDOMNode(this.refs.content), 
+      comment = {
           author: authorNode.value,
           content: contentNode.value
         };
